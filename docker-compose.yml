@@ -1,0 +1,78 @@
+version: '3'
+services:
+  loki:
+    image: grafana/loki:k178-d1cdf79
+    restart: always
+    networks:
+      - main
+
+  grafana:
+    image: grafana/grafana:10.2.2
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - ./grafana_storage:/var/lib/grafana
+    user: "root"
+    networks:
+      - main
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    restart: always
+  
+  postgres:
+    image: postgres:15.3
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - main
+    command: ["postgres", "-c", "log_statement=all"]
+
+  pgadmin:
+    image: dpage/pgadmin4:8.0
+    restart: always
+  
+  minio:
+    image: minio/minio:RELEASE.2023-12-02T10-51-33Z
+    restart: always
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
+    volumes:
+      - ./data-minio:/data
+    networks:
+      - main
+    command: server --console-address ":9090" /data
+
+  nginx:
+    build:
+      context: nginx
+    restart: always
+    ports:
+      - "${PORT_NGINX:-80}:80"
+    networks:
+      - main
+
+  front:
+    build:
+      context: front
+    restart: always
+    networks:
+      - main
+
+  back:
+    build:
+      context: back
+    image: node:21
+    restart: always
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
