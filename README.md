@@ -14,7 +14,7 @@ While the chat itself isn't very complex, the goal is to illustrate how to prope
 
 ![App](/demo/chat_image.png)
 
-![App](/demo/chat_video.mp4)
+![App](/demo/chat_video.webm)
 
 ![Grafana](/demo/grafana.png)
 
