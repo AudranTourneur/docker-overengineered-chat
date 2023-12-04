@@ -68,8 +68,6 @@ services:
       context: front
       dockerfile: Dockerfile
     restart: always
-    volumes:
-      - ./front:/app
     networks:
       - main
 
@@ -78,8 +76,6 @@ services:
       context: back
       dockerfile: Dockerfile
     restart: always
-    volumes:
-      - ./back:/app
     networks:
       - main
 
