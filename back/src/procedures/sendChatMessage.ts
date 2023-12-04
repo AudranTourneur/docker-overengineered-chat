@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { GlobalDatabaseClient } from "../common/database";
 import { messages } from "../schema";
-import { resolveSessionTokenIntoUserOrCreateUser, resolveSessionTokenIntoUserOrFail } from "../common/auth";
+import { resolveSessionTokenIntoUserOrFail } from "../common/auth";
 import { getChatMessages } from "./getChatMessages";
 
 export const sendChatMessageSchema = z.object({
