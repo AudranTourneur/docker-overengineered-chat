@@ -7,7 +7,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
  
 COPY . .
-RUN pnpm build
+RUN npm run build
  
 EXPOSE 3000
 CMD ["node", "build"]
