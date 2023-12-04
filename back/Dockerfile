@@ -1,4 +1,4 @@
-FROM node:21
+FROM node:21-alpine3.17
 WORKDIR /home/node/app
 ENV USER=node
 COPY --chown=node package.json package-lock.json ./

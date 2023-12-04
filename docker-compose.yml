@@ -1,7 +1,7 @@
 version: "3"
 services:
   grafana:
-    image: grafana/grafana-oss
+    image: grafana/grafana-oss:10.2.2
     restart: always
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin123
@@ -39,7 +39,7 @@ services:
       - main
 
   postgres-exporter:
-    image: prometheuscommunity/postgres-exporter
+    image: prometheuscommunity/postgres-exporter:v0.15.0
     restart: always
     ports:
       - "9187:9187"
@@ -74,7 +74,6 @@ services:
   back:
     build:
       context: back
-      dockerfile: Dockerfile
     restart: always
     networks:
       - main
@@ -89,9 +88,8 @@ services:
       - main
 
   nginx-exporter:
-    image: nginx/nginx-prometheus-exporter
-    ports:
-      - "9113:9113"
+    image: nginx/nginx-prometheus-exporter:0.11
+    restart: always
     command: ["-nginx.scrape-uri", "http://nginx:8080/metrics"]
     networks:
       - main

@@ -1,5 +1,4 @@
-
-FROM alpine:latest
+FROM alpine:3.18.5
 RUN apk add --update --no-progress --no-cache nginx
 
 #We well ensure that errors and access go to standard error/ouput
