@@ -14,7 +14,7 @@ While the chat itself isn't very complex, the goal is to illustrate how to prope
 
 ![App](/demo/chat_image.png)
 
-![App](/demo/chat_video.webm)
+![App](/demo/chat_video.mov)
 
 ![Grafana](/demo/grafana.png)
 
@@ -31,6 +31,9 @@ The front-end uses SvelteKit, Tailwind and Skeleton for the UI.
 
 ### Postgres
 The classic and reliable PostgreSQL database has been chosen here.
+Default credentials:
+Login: admin
+Password: admin123
 
 ### pgAdmin
 The graphical GUI pgAdmin4 is used to control the database.
