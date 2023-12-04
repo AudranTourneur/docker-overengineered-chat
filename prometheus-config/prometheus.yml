@@ -1,20 +1,8 @@
 global:
-  scrape_interval:     15s
-  evaluation_interval: 15s
-
-rule_files:
-  # - "first.rules"
-  # - "second.rules"
+  scrape_interval:     5s
+  evaluation_interval: 5s
 
 scrape_configs:
-  - job_name: back-job
+  - job_name: back
     static_configs:
-      - targets: ['back:3000']
-  - job_name: minio-job
-    bearer_token: TOKEN
-    metrics_path: /minio/v2/metrics/cluster
-    static_configs:
-      - targets: ['minio:9000']
-  - job_name: postgres-job
-    static_configs:
-      - targets: ['postgres-exporter:9187']
+      - targets: ['back:4000']

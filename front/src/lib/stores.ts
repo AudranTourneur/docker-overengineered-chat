@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import type { RouterOutput } from "./trpc";
 
 type User = {
     id: number
@@ -7,3 +8,7 @@ type User = {
 }
 
 export const currentUser = writable<null | User>(null)
+
+type ChatMessage = RouterOutput['getChatMessages'][0]
+
+export const chatMessages = writable<ChatMessage[]>([])

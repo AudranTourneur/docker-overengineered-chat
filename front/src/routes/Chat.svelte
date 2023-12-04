@@ -1,83 +1,23 @@
 <script lang="ts">
 	//import { getTRPCClient } from '$lib/trpc';
-	import { Avatar, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import { Avatar } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane, faPlus } from '@fortawesome/free-solid-svg-icons';
-
-	//const client = getTRPCClient();
-
-	// Types
-	interface Person {
-		id: number;
-		avatar: number;
-		name: string;
-	}
-	interface MessageFeed {
-		id: number;
-		host: boolean;
-		avatar: number;
-		name: string;
-		timestamp: string;
-		message: string;
-		color: string;
-	}
+	import { currentUser, chatMessages } from '$lib/stores';
+	import { getTRPCClient} from '$lib/trpc';
 
 	let elemChat: HTMLElement;
-	const lorem = '...';
-
-	// Navigation List
-	const people: Person[] = [
-		{ id: 0, avatar: 14, name: 'Michael' },
-		{ id: 1, avatar: 40, name: 'Janet' },
-		{ id: 2, avatar: 31, name: 'Susan' },
-		{ id: 3, avatar: 56, name: 'Joey' },
-		{ id: 4, avatar: 24, name: 'Lara' },
-		{ id: 5, avatar: 9, name: 'Melissa' }
-	];
-	let currentPerson: Person = people[0];
 
     //const serverMessages = client.getChatMessages.query()
 
-	// Messages
-	let messageFeed: MessageFeed[] = [
-		{
-			id: 0,
-			host: true,
-			avatar: 48,
-			name: 'Jane',
-			timestamp: 'Yesterday @ 2:30pm',
-			message: lorem,
-			color: 'variant-soft-primary'
-		},
-		{
-			id: 1,
-			host: false,
-			avatar: 14,
-			name: 'Michael',
-			timestamp: 'Yesterday @ 2:45pm',
-			message: lorem,
-			color: 'variant-soft-primary'
-		},
-		{
-			id: 2,
-			host: true,
-			avatar: 48,
-			name: 'Jane',
-			timestamp: 'Yesterday @ 2:50pm',
-			message: lorem,
-			color: 'variant-soft-primary'
-		},
-		{
-			id: 3,
-			host: false,
-			avatar: 14,
-			name: 'Michael',
-			timestamp: 'Yesterday @ 2:52pm',
-			message: lorem,
-			color: 'variant-soft-primary'
-		}
-	];
+    onMount(async () => {
+        // We should use a WebSocket in a real app
+        setInterval(async () => {
+            $chatMessages = await getTRPCClient().getChatMessages.query()
+        }, 2000)
+    })
+
 	let currentMessage = '';
 
 	// For some reason, eslint thinks ScrollBehavior is undefined...
@@ -86,29 +26,21 @@
 		elemChat.scrollTo({ top: elemChat.scrollHeight, behavior });
 	}
 
-	function getCurrentTimestamp(): string {
-		return new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-	}
+	async function addMessage(): Promise<void> {
+        await getTRPCClient().sendChatMessage.mutate({
+            token: $currentUser?.token || '',
+            messageContent: currentMessage
+        })
 
-	function addMessage(): void {
-		const newMessage = {
-			id: messageFeed.length,
-			host: true,
-			avatar: 48,
-			name: 'Jane',
-			timestamp: `Today @ ${getCurrentTimestamp()}`,
-			message: currentMessage,
-			color: 'variant-soft-primary'
-		};
-		// Update the message feed
-		messageFeed = [...messageFeed, newMessage];
+		$chatMessages = await getTRPCClient().getChatMessages.query()
+       
 		// Clear prompt
 		currentMessage = '';
 		// Smooth scroll to bottom
 		// Timeout prevents race condition
 		setTimeout(() => {
 			scrollChatBottom('smooth');
-		}, 0);
+		}, 100);
 	}
 
 	function onPromptKeydown(event: KeyboardEvent): void {
@@ -129,26 +61,26 @@
 	<div class="grid grid-row-[1fr_auto]">
 		<!-- Conversation -->
 		<section bind:this={elemChat} class="max-h-[500px] p-4 overflow-y-auto space-y-4">
-			{#each messageFeed as bubble}
-				{#if bubble.host === true}
+			{#each $chatMessages as bubble}
+				{#if bubble.username === $currentUser?.username}
 					<div class="grid grid-cols-[auto_1fr] gap-2">
 						<Avatar src="/avatar-default-icon.png" width="w-12" />
 						<div class="card p-4 variant-soft rounded-tl-none space-y-2">
 							<header class="flex justify-between items-center">
-								<p class="font-bold">{bubble.name}</p>
-								<small class="opacity-50">{bubble.timestamp}</small>
+								<p class="font-bold">{bubble.username}</p>
+								<small class="opacity-50">{bubble.createdAt?.toISOString()}</small>
 							</header>
-							<p>{bubble.message}</p>
+							<p>{bubble.messageContent}</p>
 						</div>
 					</div>
 				{:else}
 					<div class="grid grid-cols-[1fr_auto] gap-2">
-						<div class="card p-4 rounded-tr-none space-y-2 {bubble.color}">
+						<div class="card p-4 rounded-tr-none space-y-2 variant-soft-primary">
 							<header class="flex justify-between items-center">
-								<p class="font-bold">{bubble.name}</p>
-								<small class="opacity-50">{bubble.timestamp}</small>
+								<p class="font-bold">{bubble.username}</p>
+								<small class="opacity-50">{bubble.createdAt?.toISOString().split('.')[0]}</small>
 							</header>
-							<p>{bubble.message}</p>
+							<p>{bubble.messageContent}</p>
 						</div>
 						<Avatar src="/avatar-default-icon.png" width="w-12" />
 					</div>

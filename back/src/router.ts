@@ -6,6 +6,7 @@ import { startMetricsServer } from "./common/metrics";
 import { getChatMessages } from "./procedures/getChatMessages";
 import { z } from "zod";
 import { registerOrLogin } from "./procedures/registerOrLogin";
+import { sendChatMessage, sendChatMessageSchema } from "./procedures/sendChatMessage";
 
 export const appRouter = createRouter();
 
@@ -31,6 +32,9 @@ function createRouter() {
     getChatMessages: publicProcedure.query(async () => {
       return await getChatMessages();
     }),
+    sendChatMessage: publicProcedure.input(sendChatMessageSchema).mutation(async req => {
+        return await sendChatMessage(req.input);
+    })
   });
 }
 

@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node esbuild.js",
-    "start": "bun src/server.ts",
-    "dev": "(node eswatch.js) & (nodemon dist/out.js)"
+    "start": "node dist/out.js"
   },
   "keywords": [],
   "author": "",
