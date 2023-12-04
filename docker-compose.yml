@@ -1,11 +1,5 @@
 version: "3"
 services:
-  #loki:
-  #  image: grafana/loki:k178-d1cdf79
-  #  restart: always
-  #  networks:
-  #    - main
-
   grafana:
     image: grafana/grafana-oss
     restart: always
@@ -45,8 +39,14 @@ services:
       - main
 
   postgres-exporter:
-    image: bitnami/postgres-exporter
+    image: prometheuscommunity/postgres-exporter
     restart: always
+    ports:
+      - "9187:9187"
+    environment:
+      - DATA_SOURCE_URI=postgres:5432/admin?sslmode=disable
+      - DATA_SOURCE_USER=admin
+      - DATA_SOURCE_PASS=admin123
     networks:
       - main
 
@@ -85,6 +85,14 @@ services:
     restart: always
     ports:
       - "${PORT_NGINX:-8888}:80"
+    networks:
+      - main
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter
+    ports:
+      - "9113:9113"
+    command: ["-nginx.scrape-uri", "http://nginx:8080/metrics"]
     networks:
       - main
 

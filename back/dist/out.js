@@ -13,7 +13,6 @@ var envSchema = z.object({
   MINIO_SECRET_KEY: z.string().min(1),
   MINIO_HOST: z.string().min(1),
   MINIO_PORT: z.string().min(1),
-  LOKI_URL: z.string().min(1)
 });
 var GlobalEnv = envSchema.parse(process.env);
 
