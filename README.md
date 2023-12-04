@@ -27,7 +27,7 @@ The pgAdmin interface:
 
 ### back & front
 Both the back-end and the front-end use [Node.js](https://nodejs.org). <br />
-The back-end uses the battle-tested Express.js framework, it also uses the [tRPC](https://trpc.io) library for the API and [Drizzle ORM](https://orm.drizzle.team/) for the database.  <br />
+The back-end uses the battle-tested [Express.js](https://expressjs.com) framework, it also uses the [tRPC](https://trpc.io) library for the API and [Drizzle ORM](https://orm.drizzle.team/) for the database.  <br />
 The front-end uses [SvelteKit](https://kit.svelte.dev/), [Tailwind](https://tailwindcss.com/) and [SkeletonUI](https://skeleton.dev) for the interface.
 
 ### Postgres
@@ -57,10 +57,10 @@ This service is exposed through NGINX at the URL path `/grafana`
 [NGINX](https://www.nginx.com/) acts as a reverse-proxy and is the sole entry-point for the application to the Internet
 
 ### nginx-exporter
-To make NGINX data readable by Prometheus, an intermediate container is used to analyze NGINX and transform this information ([prometheus-exporter](https://hub.docker.com/r/prometheuscommunity/postgres-exporter))
+To make NGINX data readable by Prometheus, an intermediate container is used to analyze NGINX and create metrics ([prometheuscommunity/postgres-exporter](https://hub.docker.com/r/prometheuscommunity/postgres-exporter))
 
 ### postgres-exporter
-Similarly, Postgres is analyzed by an another container to generate information readable by Prometheus ([nginx/nginx-prometheus-exporter](https://hub.docker.com/r/nginx/nginx-prometheus-exporter))
+Similarly, Postgres is analyzed by another container to generate information readable by Prometheus ([nginx/nginx-prometheus-exporter](https://hub.docker.com/r/nginx/nginx-prometheus-exporter))
 
 ## Usage
 Just clone this repository and launch the `docker-compose.yml` file, hopefully, it should "just work".
@@ -75,4 +75,4 @@ docker-compose up
 
 NGINX is by default binded to the host port 8888, this port can be changed in the root `.env` file by editing the variable `PORT_NGINX`.
 
-For demonstration purposes, all credentials have been hardcoded and commited to the repository, in a real deployment, please change these credentials and/or use [Docker's secret management system](https://docs.docker.com/compose/use-secrets/)
+For demonstration purposes, all credentials have been hardcoded and commited to the repository, should you use this as a blueprint in a real deployment, you should of course change these credentials and/or use [Docker's secret management system](https://docs.docker.com/compose/use-secrets/)
