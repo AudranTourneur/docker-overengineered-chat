@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   #loki:
   #  image: grafana/loki:k178-d1cdf79
@@ -15,7 +15,7 @@ services:
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     volumes:
       - ./grafana-data:/var/lib/grafana
-    user: 'root'
+    user: "root"
     networks:
       - main
 
@@ -30,7 +30,7 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
     networks:
       - main
-  
+
   postgres:
     image: postgres:15.3
     restart: always
@@ -55,20 +55,11 @@ services:
     restart: always
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
-    user: 'root'
+    user: "root"
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.admin
       - PGADMIN_DEFAULT_PASSWORD=admin123
       - PGADMIN_DISABLE_POSTFIX=true
-    networks:
-      - main
-  
-  nginx:
-    build:
-      context: nginx
-    restart: always
-    ports:
-      - "${PORT_NGINX:-80}:80"
     networks:
       - main
 
@@ -89,6 +80,15 @@ services:
     restart: always
     volumes:
       - ./back:/app
+    networks:
+      - main
+
+  nginx:
+    build:
+      context: nginx
+    restart: always
+    ports:
+      - "${PORT_NGINX:-80}:80"
     networks:
       - main
 
