@@ -1,11 +1,3 @@
-CREATE TABLE IF NOT EXISTS "files" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(256),
-	"user_id" integer,
-	"created_at" timestamp DEFAULT now(),
-	CONSTRAINT "files_name_unique" UNIQUE("name")
-);
-
 CREATE TABLE IF NOT EXISTS "messages" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"message_content" text,
@@ -25,12 +17,6 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"created_at" timestamp DEFAULT now(),
 	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
-
-DO $$ BEGIN
- ALTER TABLE "files" ADD CONSTRAINT "files_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
 
 DO $$ BEGIN
  ALTER TABLE "messages" ADD CONSTRAINT "messages_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;

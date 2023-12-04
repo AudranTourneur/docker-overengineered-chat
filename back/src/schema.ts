@@ -25,10 +25,3 @@ export const messages = pgTable("messages", {
   userId: integer("user_id").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
-
-export const files = pgTable("files", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).unique(),
-  userId: integer("user_id").references(() => users.id),
-  createdAt: timestamp("created_at").defaultNow(),
-});
