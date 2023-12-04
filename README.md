@@ -40,7 +40,8 @@ Password: admin123
 The graphical GUI [pgAdmin4](https://www.pgadmin.org/) is used to control the database.  <br />
 Default credentials:  <br />
 Login: admin@admin.admin  <br />
-Password: admin123
+Password: admin123 <br />
+This service is exposed through NGINX at the URL path `/pgadmin`
 
 ### Prometheus
 To monitor the application, a [Prometheus](https://prometheus.io/) instance is created, it scraps the data from an endpoint exposed by the backend and store it inside its storage component. It also scraps data from `nginx-exporter` and `postgres-exporter`. All monitoring data is centralized in this instance.
@@ -49,7 +50,8 @@ To monitor the application, a [Prometheus](https://prometheus.io/) instance is c
 In order to create human-readable visualizations, [Grafana](https://grafana.com/) is used to create an interactive dashboard using Prometheus as a data source.  <br />
 Default credentials:  <br />
 Login: admin  <br />
-Password: admin123
+Password: admin123 <br />
+This service is exposed through NGINX at the URL path `/grafana`
 
 ### NGINX
 [NGINX](https://www.nginx.com/) acts as a reverse-proxy and is the sole entry-point for the application to the Internet
@@ -61,13 +63,15 @@ To make NGINX data readable by Prometheus, an intermediate container is used to 
 Similarly, Postgres is analyzed by an another container to generate information readable by Prometheus ([nginx/nginx-prometheus-exporter](https://hub.docker.com/r/nginx/nginx-prometheus-exporter))
 
 ## Usage
-Just clone this repository and launch the docker-compose.yml file, hopefully, it should "just work".
+Just clone this repository and launch the `docker-compose.yml` file, hopefully, it should "just work".
 
 ```
 git clone https://github.com/AudranTourneur/docker-overengineered-chat
 cd docker-overengineered-chat
 docker-compose up
 ```
+
+![Docker-compose](/demo/docker-compose.png)
 
 NGINX is by default binded to the host port 8888, this port can be changed in the root `.env` file by editing the variable `PORT_NGINX`.
 
