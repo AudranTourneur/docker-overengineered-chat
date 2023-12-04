@@ -14,7 +14,7 @@ While the chat itself isn't very complex, the goal is to illustrate how to prope
 
 ![App](/demo/chat_image.png)
 
-![App](/demo/chat_video.mov)
+https://github.com/AudranTourneur/docker-overengineered-chat/assets/108300467/f3ed3d51-4d96-4b38-9886-6040917398fa
 
 ![Grafana](/demo/grafana.png)
 
