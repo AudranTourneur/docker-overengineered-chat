@@ -16,8 +16,6 @@ services:
     volumes:
       - ./grafana-data:/var/lib/grafana
     user: 'root'
-    ports:
-      - "3000:3000"
     networks:
       - main
 
@@ -30,7 +28,6 @@ services:
       - ./prometheus-data:/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
-      #- --web.config.file=/etc/prometheus/web.yml
     networks:
       - main
   
@@ -43,8 +40,6 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
       - ./back/migrations-folder:/docker-entrypoint-initdb.d
-    ports:
-      - "6001:5432"
     command: ["postgres", "-c", "log_statement=all"]
     networks:
       - main
@@ -52,15 +47,11 @@ services:
   postgres-exporter:
     image: bitnami/postgres-exporter
     restart: always
-    ports:
-      - "6005:9187"
     networks:
       - main
 
   pgadmin:
     image: dpage/pgadmin4:8.0
-    ports:
-      - "6002:80"
     restart: always
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
@@ -98,8 +89,6 @@ services:
     restart: always
     volumes:
       - ./back:/app
-    ports:
-      - "4000:4000"
     networks:
       - main
 
